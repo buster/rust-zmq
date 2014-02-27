@@ -307,7 +307,7 @@ impl Drop for Socket {
     fn drop(&mut self) {
         match self.close_final() {
             Ok(()) => { debug!("socket dropped") },
-            Err(e) => fail!(e.to_str())
+            Err(e) => fail!(e)
         }
     }
 }
@@ -652,15 +652,6 @@ pub fn poll(items: &mut [PollItem], timeout: i64) -> Result<(), Error> {
             Err(errno_to_error())
         } else {
             Ok(())
-        }
-    }
-}
-
-impl ToStr for Error {
-    /// Return the error string for an error.
-    fn to_str(&self) -> ~str {
-        unsafe {
-            str::raw::from_c_str(zmq_strerror(*self as c_int))
         }
     }
 }
